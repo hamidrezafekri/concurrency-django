@@ -4,6 +4,14 @@ from django.core.exceptions import ValidationError
 import re
 
 
+
+def phone_number_validator(phone_number):
+    regex = re.compile('^(?:\+980)?9\d{9}$')
+    if not regex.fullmatch(phone_number):
+        raise ValidationError(
+            _("enter valid phone_number")
+        )
+    
 def number_validator(password):
     regex = re.compile('[0-9]')
     if regex.search(password) == None:
@@ -27,3 +35,4 @@ def special_char_validator(password):
                 _("password must include special char"),
                 code="password_must_include_special_char"
                 )
+

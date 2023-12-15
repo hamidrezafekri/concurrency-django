@@ -1,5 +1,6 @@
 from django.urls import path, include
 
 urlpatterns = [
-    # path('blog/', include(('concurrency.blog.urls', 'blog')))
+    path('auth/', include(('concurrency.authentication.urls', 'blog'))),
+    path('user/',include(("concurrency.users.urls" , "user"))),
 ]

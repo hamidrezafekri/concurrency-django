@@ -1,8 +1,11 @@
 from django.urls import path
-from .apis import ProfileApi, RegisterApi
+from .apis import  UserRegisterApi, VerifyPhoneApi , VerifyPhoneRequestApi , UserApi
 
 
 urlpatterns = [
-    path('register/', RegisterApi.as_view(),name="register"),
-    path('profile/', ProfileApi.as_view(),name="profile"),
+    path('register/', UserRegisterApi.as_view(),name="seller-register"),
+    path('request-verify-phone/' , VerifyPhoneRequestApi.as_view() , name= "request-verify-phone"),
+    path('verify-phone/' , VerifyPhoneApi.as_view() , name= "verify-phone"),
+    path('user/' , UserApi.as_view() , name = "user-api")
+
 ]
