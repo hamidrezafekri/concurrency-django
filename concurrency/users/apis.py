@@ -11,10 +11,12 @@ from .services import (
         generate_otp,
         confirm_phone,
         update_user,
+        change_password,
     )
 from .selectors import (
         get_user,
         verify_phone_otp,
+        verify_password_otp,
         )
 from .models import (
         BaseUser,
@@ -182,3 +184,37 @@ class VerifyPhoneApi(APIView):
             return Response({"message": "your phone_number verified successfully"} ,status=status.HTTP_200_OK)
         except Exception as ex:
             return Response({"error": f"{ex}"} , status= status.HTTP_400_BAD_REQUEST)
+
+class ChangePasswordApi(APIView):
+    class InputChangePasswordSerializer(serializers.Serializer):
+        otp = serializers.IntegerField(required=True)
+        new_password = serializers.CharField(
+            validators=[
+                number_validator,
+                letter_validator,
+                special_char_validator,
+                MinLengthValidator(limit_value=8)
+            ]
+        )
+        confirm_new_password = serializers.CharField(max_length=255)
+        phone_number= serializers.CharField(max_length=11)
+        def validate(self, data):
+            if not data.get("new_password") or not data.get("confirm_new_password"):
+                raise serializers.ValidationError("Please fill password and confirm password")
+            if data.get("new_password") != data.get("confirm_new_password"):
+                raise serializers.ValidationError("confirm password is not equal to password")
+            return data
+
+    @extend_schema(request=InputChangePasswordSerializer)
+    def post(self, request):
+        serializer = self.InputChangePasswordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        try:
+            if not verify_password_otp(phone_number=serializer.validated_data.get('phone_number'),
+                                       otp=serializer.validated_data.get('otp')):
+                return Response('input data is not correct', status=status.HTTP_400_BAD_REQUEST)
+            user = get_user(phone_number=serializer.validated_data.get('phone_number'))
+            change_password(user=user, password=serializer.validated_data.get('new_password'))
+            return Response({'message': 'password changed successfully'}, status=status.HTTP_200_OK)
+        except Exception as ex:
+            return Response({"error": f"{ex}"} ,status= status.HTTP_400_BAD_REQUEST)

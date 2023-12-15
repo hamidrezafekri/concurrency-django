@@ -21,6 +21,14 @@ def update_user_secret(*, user: BaseUser, secret: str, verify_type: int) -> None
     user.save()
 
 
+def change_password(user: BaseUser, password) -> None:
+    print(f"{password=}")
+    user.set_password(password)
+    user.full_clean()
+    user.save()
+
+
+
 def generate_otp(*, user: BaseUser, verify_type: int) -> str:
     secret = pyotp.random_base32()
     update_user_secret(user=user, secret=secret, verify_type=verify_type)

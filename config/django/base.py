@@ -18,6 +18,7 @@ LOCAL_APPS = [
     'concurrency.common.apps.CommonConfig',
     'concurrency.users.apps.UsersConfig',
     'concurrency.authentication.apps.AuthenticationConfig',
+    'concurrency.credit.apps.CreditConfig',
 ]
 
 THIRD_PARTY_APPS = [
