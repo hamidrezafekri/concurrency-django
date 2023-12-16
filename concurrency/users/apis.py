@@ -55,6 +55,7 @@ class UserApi(ApiAuthMixin , APIView):
 
     @extend_schema(responses = UserOutPutSerializer)
     def get(self , request):
+        print(request.user)
         info = self.UserOutPutSerializer(request.user).data
         return Response(info , status= status.HTTP_200_OK)
 

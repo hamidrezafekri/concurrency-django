@@ -19,7 +19,6 @@ def get_auth_header(headers):
         return None
 
     auth_type, auth_value = value.split()[:2]
-
     return auth_type, auth_value
 
 
