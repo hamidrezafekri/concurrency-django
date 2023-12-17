@@ -77,4 +77,5 @@ class ProductListApi(APIView):
             products = avalible_product_list()
         except Exception as ex:
             return Response({"error": f"{ex}"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(ProductOutSerializer(products).data, status=status.HTTP_200_OK)
+        print('hello')
+        return Response(ProductOutSerializer(products, many=True).data, status=status.HTTP_200_OK)
