@@ -52,7 +52,7 @@ class BaseUserManager(BUM):
 
         return user
 
-    def create_superuser(self, phone_number, firstname='test', lastname='test', password=None , user_type = None):
+    def create_superuser(self, phone_number, firstname='test', lastname='test', password=None , user_type = UserTypes.ADMIN):
         user = self.create_user(
             phone_number=phone_number,
             firstname=firstname,
@@ -65,6 +65,8 @@ class BaseUserManager(BUM):
 
         user.is_superuser = True
         user.user_type = UserTypes.ADMIN
+        user.verified = True
+        user.phone_verified  = True
         user.save(using=self._db)
 
         return user
