@@ -42,13 +42,6 @@ class Transaction(BaseModel):
     amount = models.DecimalField(max_digits=15,
                                  decimal_places=2,
                                  )
-    # seller = models.ForeignKey(
-    #         BaseUser,
-    #         on_delete = models.SET_NULL,
-    #         related_name="transactions_as_seller",
-    #         null=True,
-    #         blank=True,
-    #         )
     customer = models.ForeignKey(
         BaseUser,
         on_delete=models.SET_NULL,

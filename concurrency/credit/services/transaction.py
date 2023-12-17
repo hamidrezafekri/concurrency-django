@@ -6,8 +6,9 @@ from concurrency.users.models import BaseUser
 from concurrency.users.services import update_user_account_balance
 
 
-def create_credit_transaction(*, amount: float, seller_new_balance: float,
+def create_credit_transaction(*, amount: int, seller_new_balance: int,
                               credit_request: CreditRequest) -> Transaction:
+    print('in-transaction')
     return Transaction.objects.create(
         transaction_type=TransactionType.CREDIT,
         amount=amount,
@@ -31,12 +32,15 @@ def create_sell_transaction(*, amount: float, seller_new_balance: float, custome
 @transaction.atomic
 def approve_request(*, id: int) -> CreditRequest:
     credit_request = update_request_status(id=id, status=True)
+    print("after-request-update")
     user = update_user_account_balance(user=credit_request.seller,
-                                       amount=float(credit_request.amount),
+                                       amount=int(credit_request.amount),
                                        choice=TransactionType.CREDIT)
-    create_credit_transaction(amount=float(credit_request.amount),
-                              seller_new_balance=float(user.account_balance),
+    print("after_update-user")
+    create_credit_transaction(amount=int(credit_request.amount),
+                              seller_new_balance=int(user.account_balance),
                               credit_request=credit_request)
+    print('after-transaction')
     return credit_request
 
 

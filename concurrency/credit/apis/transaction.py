@@ -27,6 +27,7 @@ class ChangeRequestStatusApi(ApiAuthMixin, APIView):
 
         try:
             if serializer.validated_data.get("status"):
+                print("hello-from-approve")
                 credit_request = approve_request(id=id)
                 return Response({"message": "request updated successfully"}, status=status.HTTP_200_OK)
             else:
