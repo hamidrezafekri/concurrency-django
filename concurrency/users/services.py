@@ -59,3 +59,9 @@ def update_user_account_balance(user: BaseUser, amount: int, choice: int) -> Bas
         raise ValueError("Invalid transaction type.")
     user.save()
     return user
+
+
+def increase_customer_balance(*, customer: BaseUser, amount: int) -> BaseUser:
+    customer.account_balance += amount
+    customer.save()
+    return customer

@@ -10,3 +10,8 @@ def product_detail(seller: BaseUser, id: int) -> Product:
 
 def avalible_product_list() -> Product:
     return Product.objects.get(amount__lte=F('seller__account_balance'))
+
+
+def check_product_avaliblity(*, id: int) -> bool:
+    product = Product.objects.get(id=id)
+    return product.amount <= product.seller.account_balance

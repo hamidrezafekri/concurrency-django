@@ -24,8 +24,6 @@ LOCAL_APPS = [
 THIRD_PARTY_APPS = [
     'rest_framework',
     'django_filters',
-    'django_celery_results',
-    'django_celery_beat',
     'corsheaders',
     'drf_spectacular',
     'django_extensions',
@@ -149,15 +147,8 @@ REST_FRAMEWORK = {
 }
 
 
-# Redis
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': env("REDIS_LOCATION", default="redis://localhost:6379"),
-    }
-}
-# Cache time to live is 15 minutes.
-CACHE_TTL = 60 * 15
+
+
 
 
 APP_DOMAIN = env("APP_DOMAIN", default="http://localhost:8000")
@@ -166,8 +157,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 from config.settings.cors import *  # noqa
 from config.settings.jwt import *  # noqa
-from config.settings.sessions import *  # noqa
-from config.settings.celery import *  # noqa
+# from config.settings.sessions import *  # noqa
+# from config.settings.celery import *  # noqa
 from config.settings.swagger import *  # noqa
 #from config.settings.sentry import *  # noqa
 #from config.settings.email_sending import *  # noqa
