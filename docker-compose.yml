@@ -1,4 +1,4 @@
-version: "3.10"
+version: "3.9"
 
 services:
   db:
@@ -30,14 +30,4 @@ services:
 
 
 
-  beats:
-    build:
-      context: .
-      dockerfile: docker/production.Dockerfile
-    environment:
-      - DATABASE_URL=psql://user:password@db:5432/concurrency
-    volumes:
-      - .:/app
-    depends_on:
-      - db
-    restart: on-failure
+

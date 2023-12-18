@@ -1,40 +1,19 @@
-# concurrency
+### Assignment
 
-## project setup
+---
 
-1- compelete cookiecutter workflow (recommendation: leave project_slug empty) and go inside the project
-```
-cd concurrency
-```
+**Description:** 
+This project was developed using Django, Django Rest Framework, JWT, pytest, and other technologies to create a robust web application. The project is containerized with Docker and can be run using Docker Compose. It also includes API documentation using Swagger.
 
-2- SetUp venv
-```
-virtualenv -p python3.10 venv
-source venv/bin/activate
+**Setup and Execution:**
+To run the project, you will need Docker and Docker Compose installed. Use the following command to bring the project up:
+```bash
+docker-compose -f docker-compose.yml up -d
 ```
 
-3- install Dependencies
-```
-pip install -r requirements_dev.txt
-pip install -r requirements.txt
-```
+To set up the environment variables, you can use the provided `.env.example` file as a template.
 
-4- create your env
-```
-cp .env.example .env
-```
+**API Documentation:** 
+The project includes API documentation in Swagger format, which can be accessed once the project is running.
 
-5- Create tables
-```
-python manage.py migrate
-```
-
-6- spin off docker compose
-```
-docker compose -f docker-compose.dev.yml up -d
-```
-
-7- run the project
-```
-python manage.py runserver
-```
+____
