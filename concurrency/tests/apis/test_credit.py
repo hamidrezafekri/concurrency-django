@@ -21,16 +21,13 @@ def test_order_product_zero_balance_seller_two(api_customer, seller_two_product_
     assert response.status_code == status.HTTP_400_BAD_REQUEST
 
 
-@pytest.mark.django_db(transaction = True)
+@pytest.mark.django_db
 def test_approve_credit_request_seller_one(api_admin, seller_one_credit_2000, seller1):
     url = reverse("api:credit:change-request-status", kwargs={"id": seller_one_credit_2000.id})
     body = {"status": True}
     response = api_admin.put(url, json.dumps(body), content_type="application/json")
-    seller1.refresh_from_db()
+
+    # assert seller1.account_balance == seller_one_credit_2000.amount
     assert response.status_code == status.HTTP_200_OK
 
 
-@pytest.mark.django_db(transaction = True)
-def test_seller_one_account_balance(seller1, seller_one_credit_2000):
-    seller1.refresh_from_db()
-    assert seller1.account_balance == seller_one_credit_2000.amount

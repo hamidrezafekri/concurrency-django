@@ -7,7 +7,7 @@ from concurrency.users.models import BaseUser, UserTypes
 
 
 @pytest.fixture
-def seller1(db):
+def seller1():
     user = BaseUser.objects.create_user(
         phone_number="09101111111",
         password="@hamid14520",
@@ -22,7 +22,7 @@ def seller1(db):
 
 
 @pytest.fixture
-def api_seller1(seller1, db):
+def api_seller1(seller1):
     client = APIClient()
     refresh = RefreshToken.for_user(seller1)
     client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
@@ -30,7 +30,7 @@ def api_seller1(seller1, db):
 
 
 @pytest.fixture
-def seller2(db):
+def seller2():
     user = BaseUser.objects.create_user(
         phone_number="09102222222",
         password="@hamid14520",
@@ -45,7 +45,7 @@ def seller2(db):
 
 
 @pytest.fixture
-def api_seller2(seller2, db):
+def api_seller2(seller2):
     client = APIClient()
     refresh = RefreshToken.for_user(seller2)
     client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
@@ -53,7 +53,7 @@ def api_seller2(seller2, db):
 
 
 @pytest.fixture
-def customer(db):
+def customer():
     user = BaseUser.objects.create_user(
         phone_number="09103333333",
         password="@hamid14520",
@@ -68,7 +68,7 @@ def customer(db):
 
 
 @pytest.fixture
-def api_customer(customer, db):
+def api_customer(customer):
     client = APIClient()
     refresh = RefreshToken.for_user(customer)
     client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
@@ -76,7 +76,7 @@ def api_customer(customer, db):
 
 
 @pytest.fixture
-def admin(db):
+def admin():
     user = BaseUser.objects.create_user(
         phone_number="09104444444",
         password="@hamid14520",
@@ -93,7 +93,7 @@ def admin(db):
 
 
 @pytest.fixture
-def api_admin(admin, db):
+def api_admin(admin):
     client = APIClient()
     refresh = RefreshToken.for_user(admin)
     client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
@@ -101,70 +101,70 @@ def api_admin(admin, db):
 
 
 @pytest.fixture
-def seller_one_product_1000(seller1, db):
+def seller_one_product_1000(seller1):
     return ProductFactory(amount=1000, seller=seller1)
 
 
 @pytest.fixture
-def seller_one_product_1500(seller1, db):
+def seller_one_product_1500(seller1):
     return ProductFactory(amount=1500, seller=seller1)
 
 
 @pytest.fixture
-def seller_one_product_5000(seller1, db):
+def seller_one_product_5000(seller1):
     return ProductFactory(amount=5000, seller=seller1)
 
 
 @pytest.fixture
-def seller_one_product_6000(seller1, db):
+def seller_one_product_6000(seller1):
     return ProductFactory(amount=6000, seller=seller1)
 
 
 @pytest.fixture
-def seller_one_product_10000(seller1, db):
+def seller_one_product_10000(seller1):
     return ProductFactory(amount=10000, seller=seller1)
 
 
 @pytest.fixture
-def seller_two_product_1000(seller2, db):
+def seller_two_product_1000(seller2):
     return ProductFactory(amount=1000, seller=seller2)
 
 
 @pytest.fixture
-def seller_two_product_3000(seller2, db):
+def seller_two_product_3000(seller2):
     return ProductFactory(amount=3000, seller=seller2)
 
 
 @pytest.fixture
-def seller_two_product_5000(seller2, db):
+def seller_two_product_5000(seller2):
     return ProductFactory(amount=5000, seller=seller2)
 
 
 @pytest.fixture
-def seller_two_product_6000(seller2, db):
+def seller_two_product_6000(seller2):
     return ProductFactory(amount=6000, seller=seller2)
 
 
 @pytest.fixture
-def seller_two_product_10000(seller2, db):
+def seller_two_product_10000(seller2):
     return ProductFactory(amount=10000, seller=seller2)
 
 
 @pytest.fixture
-def seller_one_credit_100000(seller1, db):
+def seller_one_credit_100000(seller1):
     return CreditRequestFactory(amount=100000, seller=seller1)
 
 
 @pytest.fixture
-def seller_one_credit_2000(seller1, db):
+def seller_one_credit_2000(seller1):
     return CreditRequestFactory(amount=2000, seller=seller1)
 
 
 @pytest.fixture
-def seller_two_credit_60000(seller2, db):
+def seller_two_credit_60000(seller2):
     return CreditRequestFactory(amount=60000, seller=seller2)
 
 
 @pytest.fixture
-def seller_two_credit_5000(db, seller2):
+def seller_two_credit_5000(seller2):
     return CreditRequestFactory(amount=5000, seller=seller2)
