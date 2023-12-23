@@ -9,4 +9,5 @@ def request_increase_credit(*, seller: BaseUser, amount: int) -> CreditRequest:
 def update_request_status(*, id: int, status: bool) -> CreditRequest:
     credit_request = CreditRequest.objects.get(id=id)
     credit_request.status = CreditRequestStatus.APPROVED if status else CreditRequestStatus.REJECTED
+    credit_request.save()
     return credit_request

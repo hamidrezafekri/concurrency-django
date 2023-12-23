@@ -28,11 +28,10 @@ class ChangeRequestStatusApi(ApiAuthMixin, APIView):
 
         try:
             if serializer.validated_data.get("status"):
-                print("hello-from-approve")
-                credit_request = approve_request(id=id)
+                approve_request(id=id)
                 return Response({"message": "request updated successfully"}, status=status.HTTP_200_OK)
             else:
-                credit_request = reject_request(id=id)
+                reject_request(id=id)
                 return Response({"message": "request updated successfully"}, status=status.HTTP_200_OK)
         except Exception as ex:
             return Response({"error": f"{ex}"}, status=status.HTTP_400_BAD_REQUEST)

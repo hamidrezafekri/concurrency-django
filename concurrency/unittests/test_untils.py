@@ -1,6 +1,7 @@
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from concurrency.credit.models import Product, CreditRequest
 from concurrency.users.models import (
     BaseUser,
     UserTypes,
@@ -140,7 +141,23 @@ def seller2_data() -> dict:
     return payload
 
 
-def get_field(fieldname: str, value: int | str) -> dict:
+def get_field(*, fieldname: str, value: int | str) -> dict:
     return {
         fieldname: value
     }
+
+
+def create_product(*, seller: BaseUser, amount: int) -> Product:
+    return Product.objects.create(
+        seller=seller,
+        amount=amount,
+        is_active=True,
+    )
+
+
+def create_credit_request(*, seller: BaseUser, amount: int) -> CreditRequest:
+    return CreditRequest.objects.create(
+        seller=seller,
+        amount=amount
+    )
+
