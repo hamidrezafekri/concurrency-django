@@ -1,6 +1,6 @@
 import os
 from config.env import env, BASE_DIR
-
+import sys
 env.read_env(os.path.join(BASE_DIR, ".env"))
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -82,6 +82,9 @@ DATABASES = {
     'default': env.db('DATABASE_URL', default='psql://user:password@127.0.0.1:5432/concurrency'),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
+
+
+
 
 if os.environ.get('GITHUB_WORKFLOW'):
     DATABASES = {

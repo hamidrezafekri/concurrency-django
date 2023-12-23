@@ -11,5 +11,5 @@ urlpatterns = [
             path("admin-login/" , AdminLoginApi.as_view() , name= "admin-login"),
             path('refresh/', TokenRefreshView.as_view(),name="refresh"),
             path('verify/', TokenVerifyView.as_view(),name="verify"),
-            ])), name="jwt"),
+            ], "jwt")),),
         ]

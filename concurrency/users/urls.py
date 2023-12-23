@@ -10,7 +10,7 @@ from .apis import  (
 
 
 urlpatterns = [
-    path('register/', UserRegisterApi.as_view(),name="seller-register"),
+    path('register/', UserRegisterApi.as_view(),name="register"),
     path('request-verify-phone/' , VerifyPhoneRequestApi.as_view() , name= "request-verify-phone"),
     path('request-change-password/' ,ChangePasswordRequestApi.as_view() , name = "request-change_password"),
     path('verify-phone/' , VerifyPhoneApi.as_view() , name= "verify-phone"),
