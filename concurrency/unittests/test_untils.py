@@ -8,7 +8,7 @@ from concurrency.users.models import (
 )
 
 
-def admin():
+def admin() -> BaseUser:
     user = BaseUser.objects.create_user(
         phone_number="09104444444",
         password="@hamid14520",
@@ -24,7 +24,7 @@ def admin():
     return user
 
 
-def customer():
+def customer() -> BaseUser:
     user = BaseUser.objects.create_user(
         phone_number="09101111111",
         password="@hamid14520",
@@ -35,7 +35,7 @@ def customer():
     return user
 
 
-def verified_customer():
+def verified_customer() -> BaseUser:
     user = BaseUser.objects.create_user(
         phone_number="09101111111",
         password="@hamid14520",
@@ -48,7 +48,7 @@ def verified_customer():
     return user
 
 
-def seller1():
+def seller1() -> BaseUser:
     user = BaseUser.objects.create_user(
         phone_number="09102222222",
         password="@hamid14520",
@@ -59,7 +59,7 @@ def seller1():
     return user
 
 
-def verified_seller1():
+def verified_seller1() -> BaseUser:
     user = BaseUser.objects.create_user(
         phone_number="09102222222",
         password="@hamid14520",
@@ -73,7 +73,7 @@ def verified_seller1():
     return user
 
 
-def seller2():
+def seller2() -> BaseUser:
     user = BaseUser.objects.create_user(
         phone_number="09103333333",
         password="@hamid14520",
@@ -84,7 +84,7 @@ def seller2():
     return user
 
 
-def verified_seller2():
+def verified_seller2() -> BaseUser:
     user = BaseUser.objects.create_user(
         phone_number="09103333333",
         password="@hamid14520",
@@ -160,4 +160,3 @@ def create_credit_request(*, seller: BaseUser, amount: int) -> CreditRequest:
         seller=seller,
         amount=amount
     )
-
