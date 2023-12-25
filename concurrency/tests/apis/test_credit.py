@@ -26,8 +26,7 @@ def test_approve_credit_request_seller_one(api_admin, seller_one_credit_2000, se
     url = reverse("api:credit:change-request-status", kwargs={"id": seller_one_credit_2000.id})
     body = {"status": True}
     response = api_admin.put(url, json.dumps(body), content_type="application/json")
-
+    seller1.refresh_from_db()
+    print(seller1.account_balance)
     # assert seller1.account_balance == seller_one_credit_2000.amount
     assert response.status_code == status.HTTP_200_OK
-
-
