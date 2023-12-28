@@ -40,3 +40,11 @@ class VerifyUserTest(TestCase):
 
     def test_seller2_verify_phone(self):
         self.verify_phone_number(seller2)
+
+    def test_verify_with_incorrect_otp(self):
+        user = seller1()
+        verify_response = self.post_request("api:user:verify-phone", {
+            "phone_number": user.phone_number,
+            "otp": 123456
+        })
+        self.assertEqual(verify_response.status_code, status.HTTP_400_BAD_REQUEST)
