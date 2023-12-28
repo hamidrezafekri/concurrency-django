@@ -19,6 +19,7 @@ def test_increase_credit_buy_product(customer, seller1, seller_one_credit_2000, 
     assert seller1.account_balance == seller_one_credit_2000.amount
     sell_product(customer=customer, product_id=seller_one_product_1000.id)
     seller1.refresh_from_db()
+    customer.refresh_from_db()
     assert customer.account_balance == seller_one_product_1000.amount
     assert seller1.account_balance == seller_one_product_1000.amount
 

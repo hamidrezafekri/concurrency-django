@@ -1,5 +1,7 @@
 import concurrent.futures
 import json
+from concurrent.futures import ThreadPoolExecutor
+
 from rest_framework import status
 from django.urls import reverse
 from django.test import TestCase
@@ -35,6 +37,21 @@ class CreditTestCase(TestCase):
         response = self.customer_client.post(url, json.dumps({"product": product.id}),
                                              content_type="application/json")
         return response
+
+    def test_concurrent_increase_credit(self):
+        def hit_endpoint():
+            request = create_credit_request(seller=self.seller1, amount=2000)
+            url = reverse("api:credit:change-request-status", kwargs={"id": request.id})
+            body = {"status": True}
+            response = self.admin_client.put(url, json.dumps(body), content_type="application/json")
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        request_count = 2
+        with ThreadPoolExecutor(max_workers=request_count) as executor:
+            futures = [executor.submit(hit_endpoint) for _ in range(request_count)]
+
+        for future in futures:
+            future.result()
 
     def test_reject_increase_credit_request_seller1(self):
         response = self.increate_credit_api(amount=2000, seller=self.seller1, status=False)

@@ -9,6 +9,10 @@ from concurrency.unittests.test_untils import (
 from rest_framework.test import APIClient
 from django.urls import reverse
 import json
+
+from concurrency.users.models import UserTypes
+
+
 class UsersRegisterTest(TestCase):
 
     def setUp(self):
@@ -31,6 +35,33 @@ class UsersRegisterTest(TestCase):
         url = reverse("api:user:register")
         response = self.client.post(url, json.dumps(self.customer), content_type="application/json")
         self.assertEquals(response.status_code, status.HTTP_200_OK)
+
+    def test_register_with_not_equal_password(self):
+        url = reverse("api:user:register")
+        body={
+            "firstname":"fname",
+            "lastname":"lname",
+            "phone_number":"09337272512",
+            "password":"@hamid14520",
+            "confirm_password":"@hamid1234",
+            "user_type":UserTypes.CUSTOMER,
+        }
+        response = self.client.post(url , json.dumps(body) , content_type="application/json")
+        self.assertEqual(response.status_code , status.HTTP_400_BAD_REQUEST)
+
+    def test_register_wit_invalid_password(self):
+        url = reverse("api:user:register")
+        body = {
+            "firstname": "fname",
+            "lastname": "lname",
+            "phone_number": "09337272512",
+            "password": "hamid14520",
+            "confirm_password": "hamid1234",
+            "user_type": UserTypes.CUSTOMER,
+        }
+        response = self.client.post(url, json.dumps(body), content_type="application/json")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
 
 
 

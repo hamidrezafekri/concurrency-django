@@ -1,3 +1,5 @@
+from concurrent.futures import ThreadPoolExecutor
+
 import pytest
 from django.urls import reverse
 import json
@@ -30,3 +32,20 @@ def test_approve_credit_request_seller_one(api_admin, seller_one_credit_2000, se
     print(seller1.account_balance)
     # assert seller1.account_balance == seller_one_credit_2000.amount
     assert response.status_code == status.HTTP_200_OK
+
+@pytest.mark.django_db
+def test_concurrent_requests(api_admin, seller_one_credit_2000, seller1):
+    def hit_endpoint():
+        url = reverse("api:credit:change-request-status", kwargs={"id": seller_one_credit_2000.id})
+        body = {"status": True}
+        response = api_admin.put(url, json.dumps(body), content_type="application/json")
+        assert response.status_code == 200
+        seller1.refresh_from_db()
+        assert seller1.account_balance == 4000
+
+    request_count = 2
+    with ThreadPoolExecutor(max_workers=request_count) as executor:
+        futures = [executor.submit(hit_endpoint) for _ in range(request_count)]
+
+    for future in futures:
+        future.result()

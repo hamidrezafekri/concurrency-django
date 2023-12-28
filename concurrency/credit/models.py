@@ -10,8 +10,8 @@ class CreditRequestStatus(IntEnum):
     REJECTED = 3
 
     @classmethod
-    def choice(cls):
-        return [(key.name, key.value) for key in cls]
+    def choices(cls):
+        return [(key.value, key.name) for key in cls]
 
 
 class TransactionType(IntEnum):
@@ -19,12 +19,12 @@ class TransactionType(IntEnum):
     CREDIT = 2
 
     @classmethod
-    def choice(cls):
-        return [(key.name, key.value) for key in cls]
+    def choices(cls):
+        return [(key.value, key.name) for key in cls]
 
 
 class CreditRequest(BaseModel):
-    status = models.IntegerField(choices=CreditRequestStatus.choice(), default=CreditRequestStatus.PENDDING)
+    status = models.IntegerField(choices=CreditRequestStatus.choices(), default=CreditRequestStatus.PENDDING)
     amount = models.DecimalField(max_digits=15,
                                  decimal_places=2,
                                  )
@@ -37,7 +37,7 @@ class CreditRequest(BaseModel):
 
 class Transaction(BaseModel):
     transaction_type = models.IntegerField(
-        choices=TransactionType.choice(),
+        choices=TransactionType.choices(),
     )
     amount = models.DecimalField(max_digits=15,
                                  decimal_places=2,

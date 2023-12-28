@@ -31,9 +31,11 @@ def create_sell_transaction(*, amount: int, seller_new_balance: int, customer: B
 @transaction.atomic
 def approve_request(*, id: int) -> CreditRequest:
     credit_request = update_request_status(id=id, status=True)
+    credit_request.seller = BaseUser.objects.select_for_update().get(id=credit_request.seller.id)
     user = update_user_account_balance(user=credit_request.seller,
                                        amount=int(credit_request.amount),
                                        choice=TransactionType.CREDIT)
+
     create_credit_transaction(amount=int(credit_request.amount),
                               seller_new_balance=int(user.account_balance),
                               credit_request=credit_request)
@@ -48,6 +50,8 @@ def reject_request(*, id: int) -> CreditRequest:
 @transaction.atomic
 def sell_product(*, customer: BaseUser, product_id: int) -> Transaction:
     product = Product.objects.get(id=product_id)
+    product.seller = BaseUser.objects.select_for_update().get(id=product.seller.id)
+    customer = BaseUser.objects.select_for_update().get(id=customer.id)
     seller = update_user_account_balance(user=product.seller
                                          , amount=product.amount,
                                          choice=TransactionType.SELL)
