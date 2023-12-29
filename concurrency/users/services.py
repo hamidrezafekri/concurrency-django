@@ -49,11 +49,11 @@ class InsufficientFundsError(Exception):
 
 def update_user_account_balance(user: BaseUser, amount: int, choice: int) -> BaseUser:
     if choice == TransactionType.CREDIT:
-        user.account_balance = user.account_balance + amount
+        user.account_balance += amount
     elif choice == TransactionType.SELL:
         if amount > user.account_balance:
             raise InsufficientFundsError(f"Cannot sell because amount exceeds user's account balance.")
-        user.account_balance = user.account_balance - amount
+        user.account_balance -= amount
     else:
         raise ValueError("Invalid transaction type.")
     user.save()

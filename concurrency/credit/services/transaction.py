@@ -1,4 +1,7 @@
+from unicodedata import decimal
+
 from django.db import transaction
+from django.db.models import F
 
 from concurrency.credit.models import CreditRequest, Transaction, TransactionType, Product
 from concurrency.credit.services.request import update_request_status
@@ -6,13 +9,13 @@ from concurrency.users.models import BaseUser
 from concurrency.users.services import update_user_account_balance, increase_customer_balance
 
 
-def create_credit_transaction(*, amount: int, seller_new_balance: int,
+def create_credit_transaction(*, amount: decimal, seller_new_balance: decimal,
                               credit_request: CreditRequest) -> Transaction:
     return Transaction.objects.create(
         transaction_type=TransactionType.CREDIT,
         amount=amount,
         seller_new_balance=seller_new_balance,
-        credit_request=credit_request
+        credit_request=credit_request,
     )
 
 
@@ -35,10 +38,12 @@ def approve_request(*, id: int) -> CreditRequest:
     user = update_user_account_balance(user=credit_request.seller,
                                        amount=int(credit_request.amount),
                                        choice=TransactionType.CREDIT)
-
-    create_credit_transaction(amount=int(credit_request.amount),
-                              seller_new_balance=int(user.account_balance),
-                              credit_request=credit_request)
+    create_credit_transaction(
+        amount=credit_request.amount,
+        seller_new_balance=user.account_balance,
+        credit_request=credit_request
+    )
+    print('after upadate transaction')
     return credit_request
 
 

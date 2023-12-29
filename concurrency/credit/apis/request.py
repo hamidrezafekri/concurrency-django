@@ -41,3 +41,6 @@ class CreditRequestApi(ApiAuthMixin, APIView):
         except Exception as ex:
             return Response({"error": f"{ex}"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(self.RequsetOutPutSerializer(requests).data, status=status.HTTP_200_OK)
+
+
+# class CreditRequestAdminApi(ApiAuthMixin , AIPVie)

@@ -8,6 +8,8 @@ class SellerPermission(BasePermission):
         return request.user.user_type == UserTypes.SELLER
 
 
+
+
 class AdminPermission(BasePermission):
 
     def has_permission(self, request, view) -> bool:

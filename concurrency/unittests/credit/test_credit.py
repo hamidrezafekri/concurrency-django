@@ -1,13 +1,12 @@
-import concurrent.futures
 import json
 from concurrent.futures import ThreadPoolExecutor
 
+from django.db import connections
 from rest_framework import status
 from django.urls import reverse
 from django.test import TestCase
 from rest_framework.response import Response
 
-from concurrency.credit.models import CreditRequest
 from concurrency.unittests.test_untils import generate_client, verified_customer, verified_seller1, verified_seller2, \
     admin, create_credit_request, create_product
 from concurrency.users.models import BaseUser
@@ -46,12 +45,15 @@ class CreditTestCase(TestCase):
             response = self.admin_client.put(url, json.dumps(body), content_type="application/json")
             self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+        def on_done(futures):
+            connections.close_all()
+
         request_count = 2
         with ThreadPoolExecutor(max_workers=request_count) as executor:
-            futures = [executor.submit(hit_endpoint) for _ in range(request_count)]
-
-        for future in futures:
-            future.result()
+            while request_count > 0:
+                futures = executor.submit(hit_endpoint)
+                futures.add_done_callback(on_done)
+                request_count -= 1
 
     def test_reject_increase_credit_request_seller1(self):
         response = self.increate_credit_api(amount=2000, seller=self.seller1, status=False)

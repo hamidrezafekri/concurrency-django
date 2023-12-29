@@ -31,7 +31,6 @@ class SellerUser(HttpUser):
         self.client.get('/api/user/user/', headers=self.headers)
 
 
-
 class CustomerUser(HttpUser):
     wait_time = between(1, 5)
 
@@ -45,7 +44,3 @@ class CustomerUser(HttpUser):
     @task
     def get_user(self):
         self.client.get('/api/user/user/', headers=self.headers)
-
-
-
-

@@ -29,6 +29,7 @@ class ChangeRequestStatusApi(ApiAuthMixin, APIView):
         try:
             if serializer.validated_data.get("status"):
                 approve_request(id=id)
+                print('after change request status')
                 return Response({"message": "request updated successfully"}, status=status.HTTP_200_OK)
             else:
                 reject_request(id=id)
@@ -55,3 +56,4 @@ class BuyCreditApi(ApiAuthMixin, APIView):
             return Response({"message": "your phone charge increased"}, status=status.HTTP_200_OK)
         except Exception as ex:
             return Response({"error": f"{ex}"}, status=status.HTTP_400_BAD_REQUEST)
+

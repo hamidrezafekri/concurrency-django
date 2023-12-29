@@ -1,6 +1,7 @@
 import os
 from config.env import env, BASE_DIR
 import sys
+
 env.read_env(os.path.join(BASE_DIR, ".env"))
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -10,7 +11,6 @@ SECRET_KEY = '=ug_ucl@yi6^mrcjyz%(u0%&g2adt#bz3@yos%#@*t#t!ypx=a'
 DEBUG = True
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['*'])
-
 
 # Application definition
 LOCAL_APPS = [
@@ -74,7 +74,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -82,9 +81,6 @@ DATABASES = {
     'default': env.db('DATABASE_URL', default='psql://user:password@127.0.0.1:5432/concurrency'),
 }
 DATABASES['default']['ATOMIC_REQUESTS'] = True
-
-
-
 
 if os.environ.get('GITHUB_WORKFLOW'):
     DATABASES = {
@@ -97,7 +93,6 @@ if os.environ.get('GITHUB_WORKFLOW'):
             'PORT': '5432',
         }
     }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -131,7 +126,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -149,11 +143,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': []
 }
 
-
-
-
-
-
 APP_DOMAIN = env("APP_DOMAIN", default="http://localhost:8000")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -163,5 +152,5 @@ from config.settings.jwt import *  # noqa
 # from config.settings.sessions import *  # noqa
 # from config.settings.celery import *  # noqa
 from config.settings.swagger import *  # noqa
-#from config.settings.sentry import *  # noqa
-#from config.settings.email_sending import *  # noqa
+# from config.settings.sentry import *  # noqa
+# from config.settings.email_sending import *  # noqa
