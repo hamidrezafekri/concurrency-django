@@ -44,25 +44,25 @@ class SellAndBuyCheck(HttpUser):
                         },
                         headers=self.admin_headers, name="increase_credit-seller1")
 
-    # @task(1)
-    # def increase_credit_seller1(self):
+    @task(1)
+    def increase_credit_seller1(self):
 
-    # @task(2)
-    # def increase_credit_seller2(self):
-    #     response = self.client.post("/api/credit/submit-request/",
-    #                                 json={
-    #                                     "amount": "80000"
-    #                                 },
-    #                                 headers=self.seller2_headers,
-    #                                 name="request_increase_credit")
-    #     self.request_id = response.json()['id']
-    #     self.client.put(f"/api/credit/change-request-status/{self.request_id}/",
-    #                     json={
-    #                         'status': True
-    #                     },
-    #                     headers=self.admin_headers, name="increase_credit-seller2")
+    @task(2)
+    def increase_credit_seller2(self):
+        response = self.client.post("/api/credit/submit-request/",
+                                    json={
+                                        "amount": "80000"
+                                    },
+                                    headers=self.seller2_headers,
+                                    name="request_increase_credit")
+        self.request_id = response.json()['id']
+        self.client.put(f"/api/credit/change-request-status/{self.request_id}/",
+                        json={
+                            'status': True
+                        },
+                        headers=self.admin_headers, name="increase_credit-seller2")
 
-    @task
+    @task(4)
     def buy_product(self):
         product_id = randint(1, 3)
         self.client.post("/api/credit/buy-product/",
