@@ -43,7 +43,6 @@ def approve_request(*, id: int) -> CreditRequest:
         seller_new_balance=user.account_balance,
         credit_request=credit_request
     )
-    print('after upadate transaction')
     return credit_request
 
 
@@ -55,15 +54,14 @@ def reject_request(*, id: int) -> CreditRequest:
 @transaction.atomic
 def sell_product(*, customer: BaseUser, product_id: int) -> Transaction:
     product = Product.objects.get(id=product_id)
-    product.seller = BaseUser.objects.select_for_update().get(id=product.seller.id)
-    customer = BaseUser.objects.select_for_update().get(id=customer.id)
+    # product.seller = BaseUser.objects.select_for_update().get(id=product.seller.id)
+    # customer = BaseUser.objects.select_for_update().get(id=customer.id)
     seller = update_user_account_balance(user=product.seller
                                          , amount=product.amount,
                                          choice=TransactionType.SELL)
 
     customer = increase_customer_balance(customer=customer,
                                          amount=product.amount)
-
     transaction = create_sell_transaction(
         amount=product.amount,
         seller_new_balance=int(seller.account_balance),
